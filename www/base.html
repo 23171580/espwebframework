@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>ESP8266 WebFramework</title>
+<!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<link rel="stylesheet" type="text/css" href="/style.css" />
+</head>
+<body>
+
+    <div id="header">
+          <h1>{{title}}</h1> 
+          <h5>{{now}}  *  uptime {{uptime}}</h5>
+    </div>
+    
+    <div id="nav">        
+      <ul>
+		<li><a id="home" href="/">Home</a></li>
+		
+        <li><a class="group">SETUP</a></li>        
+        <li><a id="confwizard" href="/confwizard">Setup Wizard</a></li>
+        <li><a id="confwifi" href="/confwifi">WiFi</a></li>
+        <li><a id="confnet" href="/confnet">Network</a></li>
+        <li><a id="confserv" href="/confserv">Services</a></li>
+        <li><a id="conftime" href="/conftime">Time</a></li>
+
+        <li><a class="group">TOOLS</a></li>
+        <li><a id="fsbrowser" href="/fsbrowser">File System</a></li>
+        <li><a id="confgpio" href="/confgpio">GPIO</a></li>
+        <li><a id="restore" href="/restore">Restore</a></li>
+        <li><a id="reboot" href="/reboot">Reboot</a></li>
+      </ul>                
+    </div>
+
+    <script>
+	  var temp = window.location.href.split("?")[0].split("/");
+	  var page = temp[temp.length - 1];
+	  if (page == "") page = "home";
+      document.getElementById(page).className = "current";
+    </script>
+		
+    <div id="section">		
+		{{content}}
+    </div>
+		
+    <div id="footer">
+      <h5>(c) 2015/2016 by Fabrizio Di Vittorio - fdivitto2013@gmail.com<br>
+      Download updates from <a href="https://github.com/fdivitto/ESPWebFramework">https://github.com/fdivitto/ESPWebFramework</a></h5>
+    </div>
+		
+</body>
+</html>
