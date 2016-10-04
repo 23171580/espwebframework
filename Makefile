@@ -2,8 +2,7 @@
 SPEED		= 115200
 BUILD_DIR	= build
 SRCDIR		= ./src/
-SRCLIBDIR 	= ./libs/
-SCRIPT		= ./script/
+SRCLIBDIR 	= ./libs
 WWW_DIR		= ./www/
 WWW_BIN		= webcontent.bin
 WWW_MAXSIZE	= 57344
@@ -25,14 +24,10 @@ LD		:= $(CC)
 NM		:= $(BIN_EXEC)xt-nm
 OBJCOPY		:= $(BIN_EXEC)$(XELF)-objcopy
 OD		:= $(BIN_EXEC)$(XELF)-objdump
-ESPTOOL		:= python $(SCRIPT)esptool.py
-RTOS		:= ESP8266_IOT_RTOS_SDK
-OPEN_SDK	:= ESP_OPEN_SDK
-RTOS_BASE	:= $(SDKBASE)$(RTOS)/include
-INCLUDES	:= -I $(RTOS_BASE)
-INCLUDES	+= $(addprefix -I $(RTOS_BASE)/, espressif lwip lwip/lwip lwip/ipv4 lwip/ipv6)
-INCLUDES	+= -I $(SDKBASE)$(RTOS)/extra_include
-INCLUDES	+= -I $(SDKBASE)$(OPEN_SDK)/$(XELF)/xtensa-lx106-elf/include
+ESPTOOL		:= python ./script/esptool.py
+INCLUDES	:= -I ./ESP8266_IOT_RTOS_SDK/include
+INCLUDES	+= $(addprefix -I ./ESP8266_IOT_RTOS_SDK/include/, espressif lwip lwip/lwip lwip/ipv4 lwip/ipv6)
+INCLUDES	+= -I ./ESP8266_IOT_RTOS_SDK/extra_include
 INCLUDES	+= -I $(SRCLIBDIR)
 
 # don't change -Os (or add other -O options) otherwise FLASHMEM and FSTR data will be duplicated in RAM
@@ -43,9 +38,8 @@ CFLAGS		= -g -Os -Wpointer-arith -Wl,-EL \
 		-DICACHE_FLASH -D__ets__
 LDFLAGS		= -nostdlib -Wl,--no-check-sections -u call_user_start -Wl,-static -Wl,--gc-sections
 LD_SCRIPT	= eagle.app.v6.ld
-SDK_LIBDIR	:= -L$(SDKBASE)$(RTOS)/lib
-ELF_LIBDIR	:= -L$(SDKBASE)xtensa-lx106-elf/lib
-SDK_LDDIR	= $(SDKBASE)$(RTOS)/ld
+SDK_LIBDIR	:= -L./ESP8266_IOT_RTOS_SDK/lib
+SDK_LDDIR	= ./ESP8266_IOT_RTOS_SDK/ld
 OBJ		:= $(addprefix $(BUILD_DIR)/, \
 		user_main.o fdvserial.o fdvsync.o \
 		fdvutils.o fdvflash.o fdvprintf.o \
@@ -92,7 +86,7 @@ flash: flashweb
 	-$(ESP_CMD) write_flash 0x11000 $(TARGET_OUT)-0x11000.bin 0x00000 $(TARGET_OUT)-0x00000.bin
 
 $(WWW_CONTENT):
-	python $(SCRIPT)binarydir.py $(WWW_DIR) $@ $(WWW_MAXSIZE)
+	python ./script/binarydir.py $(WWW_DIR) $@ $(WWW_MAXSIZE)
 
 flashweb: $(WWW_CONTENT)
 	-$(ESP_CMD) write_flash $(WWW_ADDRS) $^
