@@ -1,5 +1,5 @@
 
-SPEED		= 115200
+SPEED		= 576000
 BUILD_DIR	= build
 SRCDIR		= ./src/
 SRCLIBDIR 	= ./libs

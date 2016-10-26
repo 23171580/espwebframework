@@ -310,7 +310,7 @@ void STC_FLASHMEM
 
 void STC_FLASHMEM
     ConfigurationManager::getUARTParams(uint32_t *baudRate, bool *enableSystemOutput, SerialService *serialService) {
-  *baudRate = FlashDictionary::getInt(STR_BAUD, 9600);
+  *baudRate = FlashDictionary::getInt(STR_BAUD, 115200);
   *enableSystemOutput = FlashDictionary::getBool(STR_SYSOUT, false);
 
 #if (FDV_INCLUDE_SERIALCONSOLE == 1)
